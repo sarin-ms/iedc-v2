@@ -58,7 +58,7 @@ export default function Navbar() {
           className={`${styles.logo} ${isOpen ? styles.logoOpen : ""}`}
           onClick={closeMenu}
         >
-          <IedcLogo size={100} />
+          <IedcLogo size={"5rem"} />
         </a>
 
         {/* ── Desktop links ── */}

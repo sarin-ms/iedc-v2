@@ -1,4 +1,4 @@
-export default function IedcLogo({ size = 10 }) {
+export default function IedcLogo({ size = 10 }: { size?: number | string }) {
   return (
     <svg
       width={size}
