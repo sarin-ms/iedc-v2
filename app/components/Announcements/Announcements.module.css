@@ -1,0 +1,186 @@
+/* ===== Announcements Section ===== */
+.container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-image: url("/announcements/announcement-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 6rem 2rem;
+  gap: 3.5rem;
+}
+
+/* Subtle overlay for readability */
+.container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(245, 245, 240, 0.35);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Heading ===== */
+.heading {
+  text-align: center;
+}
+
+.heading h2 {
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  text-transform: uppercase;
+  color: var(--text-heading);
+  letter-spacing: 0.03em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.headingAccent {
+  font-family: var(--font-playfair-display), "Playfair Display", serif;
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0 !important;
+}
+
+/* ===== Board — grid of sticky notes ===== */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem 2.5rem;
+  max-width: 900px;
+  width: 100%;
+  justify-items: center;
+}
+
+/* ===== Single Sticky Note ===== */
+.stickyNote {
+  position: relative;
+  width: 220px;
+  background: #faf6ec;
+  padding: 14px 14px 18px;
+  box-shadow:
+    2px 4px 12px rgba(0, 0, 0, 0.12),
+    0 1px 3px rgba(0, 0, 0, 0.08);
+  transform: rotate(var(--rotation, 0deg));
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.35s ease;
+  cursor: pointer;
+  will-change: transform;
+}
+
+.stickyNote:hover {
+  transform: rotate(0deg) translateY(-8px) scale(1.05);
+  box-shadow:
+    4px 12px 28px rgba(0, 0, 0, 0.18),
+    0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+/* ── Tape strip (real image) ── */
+.tape {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  /* transform set inline for per-note rotation */
+  z-index: 2;
+  pointer-events: none;
+  line-height: 0;
+}
+
+.tapeImage {
+  width: 90px;
+  height: auto;
+  display: block;
+  opacity: 0.85;
+}
+
+/* ── Image area ── */
+.imageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.eventImage {
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.stickyNote:hover .eventImage {
+  transform: scale(1.05);
+}
+
+/* ── Event name label ── */
+.eventName {
+  margin-top: 12px;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-heading);
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media screen and (max-width: 900px) {
+  .board {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem 2rem;
+    max-width: 520px;
+  }
+
+  .stickyNote {
+    width: 200px;
+  }
+
+  .container {
+    padding: 5rem 1.5rem;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .board {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1rem;
+  }
+
+  .stickyNote {
+    width: 155px;
+    padding: 10px 10px 14px;
+  }
+
+  .tapeImage {
+    width: 65px;
+  }
+
+  .tape {
+    top: -10px;
+  }
+
+  .eventName {
+    font-size: 0.7rem;
+    margin-top: 8px;
+  }
+
+  .container {
+    padding: 4rem 1rem;
+    gap: 2.5rem;
+  }
+}

@@ -29,7 +29,7 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "IEDC Bootcamp | CEC - Startups Start Here",
+  title: "IEDC Bootcamp CEC",
   description:
     "A startup-driven innovation forum at CEC. We experiment, validate, ship, repeat.",
 };
