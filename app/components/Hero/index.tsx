@@ -204,7 +204,6 @@ export default function Hero() {
       {/* ── Join Us button ── */}
       <button className={`${styles.heroCta} op-zero`} type="button">
         <span className={styles.heroCtaText}>Join Us</span>
-        <span className={styles.heroCtaArrow}>→</span>
       </button>
 
       {/* ── Bottom-left Founder in progress ── */}

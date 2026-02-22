@@ -133,16 +133,17 @@
 
 /* ===== Hero CTA Button ===== */
 .heroCta {
-  z-index: 2;
+  /* z-index: 2; */
   margin-top: 1.8rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
+  /* display: inline-flex; */
+  /* align-items: center; */
+  /* gap: 0.6rem; */
   font-family: var(--font-space-mono), "Space Mono", monospace;
   font-size: 0.9rem;
   font-weight: 700;
   color: var(--text-heading);
   background: var(--color-accent);
+  /* border: 1.5px solid var(--text-heading); */
   border: none;
   padding: 0.65rem 1.6rem;
   cursor: pointer;
@@ -157,12 +158,12 @@
 .heroCta::before {
   content: "";
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 3px;
+  left: 3px;
   width: 100%;
   height: 100%;
   border: 1.5px solid var(--text-heading);
-  z-index: -1;
+  pointer-events: none;
   transition:
     top 0.25s ease,
     left 0.25s ease;
