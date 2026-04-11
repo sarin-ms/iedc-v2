@@ -3,7 +3,7 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background-image: url("/achievements/achievements-bg.png");
+  background-image: url("/achievements/achievements-bg.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -117,7 +117,7 @@
   max-width: 480px;
   margin: 0 auto;
   height: 520px;
-  background-image: url("/achievements/paper.png");
+  background-image: url("/achievements/paper.webp");
   background-size: cover;
   background-position: center;
   border-radius: 2px;

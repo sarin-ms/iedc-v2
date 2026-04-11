@@ -51,7 +51,7 @@ const events = [
 /* A few fixed rotations so sticky notes look hand-placed */
 const rotations = [-4, 2.5, -1.8, 3.2, -2.5, 1.5];
 const tapeRotations = [3, -5, 7, -3, 4, -6];
-const tapes = ["/announcements/tape-1.png", "/announcements/tape-2.png"];
+const tapes = ["/announcements/tape-1.webp", "/announcements/tape-2.webp"];
 
 export default function Announcements() {
   const sectionRef = useRef<HTMLElement>(null);

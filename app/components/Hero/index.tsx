@@ -136,7 +136,7 @@ export default function Hero() {
       {/* ── Top-left IEDC badge ── */}
       <div className={`${styles.iedcBadge} op-zero`}>
         <Image
-          src="/hero/iedc-est.png"
+          src="/hero/iedc-est.webp"
           alt="IEDC Bootcamp / CEC - EST. 2016"
           width={260}
           height={80}
@@ -148,7 +148,7 @@ export default function Hero() {
       {/* ── Statue illustration (right side) ── */}
       <div className={`${styles.statue} op-zero`}>
         <Image
-          src="/hero/statue.png"
+          src="/hero/statue.webp"
           alt="Classical bust illustration"
           width={340}
           height={420}
@@ -160,7 +160,7 @@ export default function Hero() {
       {/* ── Community > Corporate note ── */}
       <div className={`${styles.communityNote} op-zero`}>
         <Image
-          src="/hero/comunity-corp.png"
+          src="/hero/comunity-corp.webp"
           alt="Community > Corporate"
           width={200}
           height={120}
@@ -171,7 +171,7 @@ export default function Hero() {
       {/* ── Arrow ── */}
       <div className={`${styles.arrow} op-zero`}>
         <Image
-          src="/hero/arrow.png"
+          src="/hero/arrow.webp"
           alt="Decorative arrow"
           width={180}
           height={60}
@@ -193,7 +193,7 @@ export default function Hero() {
       {/* ── Tagline strip ── */}
       <div className={`${styles.tagline} op-zero`}>
         <Image
-          src="/hero/tagline-main.png"
+          src="/hero/tagline-main.webp"
           alt="A startup-driven innovation forum at CEC. We experiment, validate, ship, repeat."
           width={520}
           height={80}
@@ -209,7 +209,7 @@ export default function Hero() {
       {/* ── Bottom-left Founder in progress ── */}
       <div className={`${styles.founderTag} op-zero`}>
         <Image
-          src="/hero/founder-prog.png"
+          src="/hero/founder-prog.webp"
           alt="Founder in progress."
           width={220}
           height={60}
