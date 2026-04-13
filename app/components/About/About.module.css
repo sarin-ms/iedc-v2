@@ -1,29 +1,31 @@
-/* ===== About Section ===== */
 .about {
   position: relative;
-  width: 100%;
-  min-height: 100vh;
-  background-image: url("/about/about-bg.webp");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 6rem 2rem;
-  gap: 4rem;
+  padding: 6.25rem 2rem;
+  background:
+    linear-gradient(180deg, #f7f0e3 0%, #f3ebde 100%);
 }
 
-/* Subtle overlay to improve text contrast */
 .about::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(245, 245, 240, 0.55);
+  background-image:
+    linear-gradient(rgba(26, 26, 26, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 26, 26, 0.045) 1px, transparent 1px);
+  background-size: 44px 44px;
+  opacity: 0.42;
   pointer-events: none;
-  z-index: 0;
+}
+
+.about::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(232, 160, 32, 0.14), transparent 18%),
+    radial-gradient(circle at 88% 78%, rgba(26, 26, 26, 0.06), transparent 20%);
+  pointer-events: none;
 }
 
 .about > * {
@@ -31,190 +33,382 @@
   z-index: 1;
 }
 
-/* ===== Heading ===== */
-.heading {
-  text-align: center;
-}
-
-.heading h2 {
-  font-family: var(--font-anton), "Anton", sans-serif;
-  font-size: clamp(2.8rem, 7vw, 6rem);
-  text-transform: uppercase;
-  color: var(--text-heading);
-  letter-spacing: 0.03em;
-  line-height: 1.05;
-  margin: 0;
-}
-
-.headingAccent {
-  font-family: var(--font-playfair-display), "Playfair Display", serif;
-  font-style: italic;
-  text-transform: none;
-  letter-spacing: 0 !important;
-}
-
-/* ===== Pipeline Container ===== */
-.pipeline {
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  width: 100%;
-  max-width: 1200px;
-  gap: 0;
-  position: relative;
-}
-
-/* ===== Single Phase ===== */
-.phase {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 2rem 1.5rem;
-  position: relative;
-}
-
-/* ── Large outlined step number ── */
-.stepNumber {
-  font-family: var(--font-anton), "Anton", sans-serif;
-  font-size: clamp(5rem, 10vw, 8rem);
-  line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 2px var(--color-primary);
-  letter-spacing: 0.04em;
-  user-select: none;
-  transition: all 0.4s ease;
-  margin-bottom: 0.5rem;
-}
-
-.phase:hover .stepNumber {
-  color: var(--color-accent);
-  -webkit-text-stroke: 2px var(--color-accent);
-  transform: scale(1.05);
-}
-
-/* ── Phase label ── */
-.phaseLabel {
-  font-family: var(--font-anton), "Anton", sans-serif;
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
-  text-transform: uppercase;
-  color: var(--text-heading);
-  letter-spacing: 0.06em;
-  margin-bottom: 0.75rem;
-  position: relative;
-}
-
-/* Underline decoration */
-.phaseLabel::after {
-  content: "";
-  display: block;
-  width: 40px;
-  height: 3px;
-  background: var(--color-accent);
-  margin: 0.4rem auto 0;
-  transition: width 0.3s ease;
-}
-
-.phase:hover .phaseLabel::after {
-  width: 80px;
-}
-
-/* ── Phase description ── */
-.phaseDesc {
-  font-family: var(--font-playfair-display), "Playfair Display", serif;
-  font-style: italic;
-  font-size: clamp(0.85rem, 1.3vw, 1.05rem);
-  color: var(--text-body);
-  line-height: 1.6;
-  max-width: 260px;
-}
-
-/* ===== Connector lines between phases ===== */
-.connector {
+.topRail {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 80px;
-  flex-shrink: 0;
-  position: relative;
-}
-
-.connectorLine {
-  width: 100%;
-  height: 0;
-  border-top: 2.5px dashed var(--color-primary);
-  opacity: 0.3;
-  position: relative;
-}
-
-.connectorLine::after {
-  content: "→";
-  position: absolute;
-  right: -6px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1rem;
-  color: var(--color-primary);
-  opacity: 0.5;
+  justify-content: space-between;
+  gap: 1rem;
+  width: min(1280px, 100%);
+  margin: 0 auto;
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(26, 26, 26, 0.18);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.18);
   font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.68);
 }
 
-/* ===== Bottom tagline ===== */
-.taglineBottom {
-  text-align: center;
+.introGrid {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1.15fr) minmax(280px, 0.72fr);
+  gap: 1.5rem;
+  align-items: start;
+  width: min(1280px, 100%);
+  margin: 2.25rem auto 0;
 }
 
-.taglineBottom p {
+.indexCard,
+.contextPanel,
+.board {
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(26, 26, 26, 0.14);
+}
+
+.indexCard {
+  padding: 1rem;
+}
+
+.indexLabel,
+.contextLabel,
+.boardHeader {
   font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: clamp(0.7rem, 1.1vw, 0.9rem);
-  color: var(--text-subtle);
+  font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-/* ===== RESPONSIVE ===== */
+.indexLabel {
+  display: inline-block;
+  color: rgba(26, 26, 26, 0.54);
+}
 
-@media screen and (max-width: 900px) {
-  .pipeline {
+.indexWord {
+  display: block;
+  margin-top: 1rem;
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(2.8rem, 5vw, 4.4rem);
+  line-height: 0.95;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-heading);
+}
+
+.indexMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(26, 26, 26, 0.12);
+}
+
+.metaRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.56);
+}
+
+.metaRow strong {
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  color: var(--text-heading);
+}
+
+.storyPanel {
+  padding: 0.35rem 0 0;
+}
+
+.eyebrow {
+  margin: 0 0 0.95rem;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.56);
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1em;
+  margin: 0;
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(2.9rem, 6vw, 5.6rem);
+  line-height: 0.94;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-heading);
+}
+
+.headingAccent {
+  display: inline-block;
+  width: fit-content;
+  padding: 0.06em 0.18em;
+  border: 1.5px solid rgba(26, 26, 26, 0.88);
+  box-shadow: 8px 8px 0 var(--color-accent);
+  background: #fffdf8;
+  font-family: var(--font-playfair-display), "Playfair Display", serif;
+  font-size: clamp(2rem, 4.8vw, 4.1rem);
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+.lead {
+  max-width: 42rem;
+  margin: 1.5rem 0 0;
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: clamp(1rem, 1.55vw, 1.12rem);
+  line-height: 1.82;
+  color: rgba(26, 26, 26, 0.8);
+}
+
+.contextPanel {
+  padding: 1rem;
+}
+
+.contextLabel {
+  display: inline-block;
+  color: rgba(26, 26, 26, 0.54);
+}
+
+.contextList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contextList li {
+  position: relative;
+  padding-left: 1rem;
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: rgba(26, 26, 26, 0.76);
+}
+
+.contextList li::before {
+  content: "+";
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  color: rgba(26, 26, 26, 0.44);
+}
+
+.manifestoBand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: min(1280px, 100%);
+  margin: 2rem auto 0;
+  padding: 1.1rem 1.25rem;
+  border: 2px solid rgba(26, 26, 26, 0.86);
+  background: #fffdf8;
+  box-shadow: 10px 10px 0 rgba(232, 160, 32, 0.9);
+  transform-origin: center;
+}
+
+.bandTag {
+  flex-shrink: 0;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.55);
+}
+
+.manifestoBand p {
+  margin: 0;
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(1.55rem, 3vw, 2.5rem);
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-heading);
+}
+
+.dossierGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.15fr) minmax(0, 0.92fr);
+  gap: 1.25rem;
+  width: min(1280px, 100%);
+  margin: 2rem auto 0;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 1rem;
+}
+
+.boardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: rgba(26, 26, 26, 0.56);
+}
+
+.briefCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.briefCopy p,
+.rulesNote {
+  margin: 0;
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.98rem;
+  line-height: 1.75;
+  color: rgba(26, 26, 26, 0.78);
+}
+
+.phaseList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.phaseItem {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 0.9rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(26, 26, 26, 0.1);
+}
+
+.phaseItem:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.phaseStep {
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: 2.1rem;
+  line-height: 0.9;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.26);
+}
+
+.phaseBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.phaseLabel {
+  margin: 0;
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: 1.35rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-heading);
+}
+
+.phaseDesc {
+  margin: 0;
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(26, 26, 26, 0.76);
+}
+
+.ruleStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.ruleChip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0.58rem 0.82rem;
+  border: 1px solid rgba(26, 26, 26, 0.14);
+  background: rgba(26, 26, 26, 0.03);
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.74);
+}
+
+.rulesNote {
+  margin-top: 1rem;
+}
+
+.revealRail,
+.revealPanel,
+.revealBand,
+.revealCard {
+  will-change: transform, opacity;
+}
+
+@media screen and (max-width: 1120px) {
+  .introGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .dossierGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .about {
+    padding: 5.25rem 1rem;
+  }
+
+  .topRail,
+  .manifestoBand {
     flex-direction: column;
-    align-items: center;
-    gap: 0;
-    max-width: 400px;
+    align-items: flex-start;
   }
 
-  .phase {
-    padding: 1.8rem 1rem;
+  .manifestoBand {
+    box-shadow: 8px 8px 0 rgba(232, 160, 32, 0.9);
   }
 
-  /* Rotate connectors to vertical */
-  .connector {
-    width: auto;
-    height: 50px;
-    transform: rotate(90deg);
-  }
-
-  .phaseDesc {
-    max-width: 300px;
+  .phaseItem {
+    grid-template-columns: 56px minmax(0, 1fr);
   }
 }
 
 @media screen and (max-width: 480px) {
-  .about {
-    padding: 4rem 1rem;
-    gap: 2.5rem;
+  .headingAccent {
+    box-shadow: 5px 5px 0 var(--color-accent);
   }
 
-  .stepNumber {
-    font-size: 4.5rem;
-    -webkit-text-stroke: 1.5px var(--color-primary);
+  .indexCard,
+  .contextPanel,
+  .board,
+  .manifestoBand {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
   }
 
-  .phase:hover .stepNumber {
-    -webkit-text-stroke: 1.5px var(--color-accent);
-  }
-
-  .connector {
-    height: 35px;
+  .manifestoBand p {
+    font-size: 1.4rem;
   }
 }

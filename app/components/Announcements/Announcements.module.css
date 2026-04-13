@@ -1,29 +1,35 @@
-/* ===== Announcements Section ===== */
 .container {
   position: relative;
-  width: 100%;
-  min-height: 100vh;
-  background-image: url("/announcements/announcement-bg.webp");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 6rem 2rem;
-  gap: 3.5rem;
+  padding: 6.25rem 2rem;
+  background:
+    radial-gradient(circle at 10% 18%, rgba(232, 160, 32, 0.16), transparent 18%),
+    linear-gradient(180deg, #f4eddc 0%, #efe5d2 100%);
 }
 
-/* Subtle overlay for readability */
 .container::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(245, 245, 240, 0.35);
+  background-image:
+    linear-gradient(rgba(26, 26, 26, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 26, 26, 0.05) 1px, transparent 1px);
+  background-size: 42px 42px;
+  opacity: 0.36;
   pointer-events: none;
-  z-index: 0;
+}
+
+.container::after {
+  content: "LIVE";
+  position: absolute;
+  right: -0.3rem;
+  top: 5rem;
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(4.5rem, 14vw, 10rem);
+  line-height: 0.84;
+  letter-spacing: 0.08em;
+  color: rgba(26, 26, 26, 0.04);
+  pointer-events: none;
 }
 
 .container > * {
@@ -31,156 +37,302 @@
   z-index: 1;
 }
 
-/* ===== Heading ===== */
-.heading {
-  text-align: center;
-}
-
-.heading h2 {
-  font-family: var(--font-anton), "Anton", sans-serif;
-  font-size: clamp(2.4rem, 6vw, 5rem);
-  text-transform: uppercase;
-  color: var(--text-heading);
-  letter-spacing: 0.03em;
-  line-height: 1.05;
-  margin: 0;
-}
-
-.headingAccent {
-  font-family: var(--font-playfair-display), "Playfair Display", serif;
-  font-style: italic;
-  text-transform: none;
-  letter-spacing: 0 !important;
-}
-
-/* ===== Board — grid of sticky notes ===== */
-.board {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 3rem 2.5rem;
-  max-width: 900px;
-  width: 100%;
-  justify-items: center;
-}
-
-/* ===== Single Sticky Note ===== */
-.stickyNote {
-  position: relative;
-  width: 220px;
-  background: #faf6ec;
-  padding: 14px 14px 18px;
-  box-shadow:
-    2px 4px 12px rgba(0, 0, 0, 0.12),
-    0 1px 3px rgba(0, 0, 0, 0.08);
-  transform: rotate(var(--rotation, 0deg));
-  transition:
-    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.35s ease;
-  cursor: pointer;
-  will-change: transform;
-}
-
-.stickyNote:hover {
-  transform: rotate(0deg) translateY(-8px) scale(1.05);
-  box-shadow:
-    4px 12px 28px rgba(0, 0, 0, 0.18),
-    0 2px 6px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-}
-
-/* ── Tape strip (real image) ── */
-.tape {
-  position: absolute;
-  top: -14px;
-  left: 50%;
-  /* transform set inline for per-note rotation */
-  z-index: 2;
-  pointer-events: none;
-  line-height: 0;
-}
-
-.tapeImage {
-  width: 90px;
-  height: auto;
-  display: block;
-  opacity: 0.85;
-}
-
-/* ── Image area ── */
-.imageWrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.eventImage {
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.stickyNote:hover .eventImage {
-  transform: scale(1.05);
-}
-
-/* ── Event name label ── */
-.eventName {
-  margin-top: 12px;
+.topRail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: min(1280px, 100%);
+  margin: 0 auto;
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(26, 26, 26, 0.18);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.18);
   font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.82rem;
-  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  color: rgba(26, 26, 26, 0.68);
+}
+
+.headerBlock {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(240px, 0.48fr);
+  gap: 1.25rem;
+  align-items: start;
+  width: min(1280px, 100%);
+  margin: 2.5rem auto 0;
+}
+
+.headingBlock {
+  max-width: 48rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.56);
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(3rem, 6.5vw, 5.9rem);
+  line-height: 0.92;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--text-heading);
-  text-align: center;
-  line-height: 1.3;
 }
 
-/* ===== RESPONSIVE ===== */
+.intro {
+  max-width: 44rem;
+  margin: 1.3rem 0 0;
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: clamp(1rem, 1.5vw, 1.12rem);
+  line-height: 1.8;
+  color: rgba(26, 26, 26, 0.8);
+}
 
-@media screen and (max-width: 900px) {
-  .board {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2.5rem 2rem;
-    max-width: 520px;
-  }
+.statusCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(26, 26, 26, 0.14);
+}
 
-  .stickyNote {
-    width: 200px;
-  }
+.statusLabel {
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.54);
+}
 
-  .container {
-    padding: 5rem 1.5rem;
+.statusCard strong {
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-heading);
+}
+
+.statusCard p {
+  margin: 0;
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(26, 26, 26, 0.76);
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 1.25rem;
+  align-items: start;
+  width: min(1280px, 100%);
+  margin: 2rem auto 0;
+}
+
+.featureCard,
+.queueCard {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(26, 26, 26, 0.14);
+}
+
+.featureCard {
+  position: relative;
+  min-height: 100%;
+  padding: 1.15rem;
+  box-shadow: 12px 12px 0 var(--feature-accent, var(--color-accent));
+}
+
+.featureCard::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 8px;
+  background: var(--feature-accent, var(--color-accent));
+}
+
+.featureTopline,
+.queueTopline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.56);
+}
+
+.featureBody {
+  padding: 2.2rem 0;
+}
+
+.featureTitle {
+  margin: 0;
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(3rem, 6vw, 4.7rem);
+  line-height: 0.92;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-heading);
+}
+
+.featureNote {
+  max-width: 34rem;
+  margin: 1rem 0 0;
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(26, 26, 26, 0.8);
+}
+
+.featureMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.featureMeta span,
+.tickerChip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0.56rem 0.82rem;
+  border: 1px solid rgba(26, 26, 26, 0.14);
+  background: rgba(26, 26, 26, 0.03);
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.74);
+}
+
+.queueColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.queueCard {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.queueDate {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.queueDate span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.68rem 0.8rem;
+  border: 1px solid rgba(26, 26, 26, 0.16);
+  border-left: 6px solid var(--queue-accent, var(--color-accent));
+  background: #fffdf8;
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: 1.2rem;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-heading);
+}
+
+.queueBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.queueTitle {
+  margin: 0;
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: 1.6rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-heading);
+}
+
+.queueNote {
+  margin: 0;
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(26, 26, 26, 0.76);
+}
+
+.tickerRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  width: min(1280px, 100%);
+  margin: 1.5rem auto 0;
+}
+
+.revealRail,
+.revealPanel,
+.revealCard,
+.revealTicker {
+  will-change: transform, opacity;
+}
+
+@media screen and (max-width: 1080px) {
+  .headerBlock,
+  .contentGrid {
+    grid-template-columns: 1fr;
   }
 }
 
-@media screen and (max-width: 520px) {
-  .board {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem 1rem;
-  }
-
-  .stickyNote {
-    width: 155px;
-    padding: 10px 10px 14px;
-  }
-
-  .tapeImage {
-    width: 65px;
-  }
-
-  .tape {
-    top: -10px;
-  }
-
-  .eventName {
-    font-size: 0.7rem;
-    margin-top: 8px;
-  }
-
+@media screen and (max-width: 768px) {
   .container {
-    padding: 4rem 1rem;
-    gap: 2.5rem;
+    padding: 5.25rem 1rem;
+  }
+
+  .topRail,
+  .featureTopline,
+  .queueTopline {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .featureCard {
+    box-shadow: 8px 8px 0 var(--feature-accent, var(--color-accent));
+  }
+
+  .queueCard {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container::after {
+    top: 6.5rem;
+    font-size: 3.8rem;
+  }
+
+  .featureTitle {
+    font-size: 2.4rem;
+  }
+
+  .statusCard,
+  .featureCard,
+  .queueCard {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
   }
 }
