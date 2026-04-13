@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import { Inter, Anton, Playfair_Display, Space_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -56,10 +56,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-};
-
-export const viewport: Viewport = {
-  themeColor: "rgb(var(--nav-color-rgb))",
 };
 
 export default function RootLayout({

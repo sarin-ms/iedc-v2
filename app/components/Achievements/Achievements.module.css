@@ -60,15 +60,18 @@
 
 /* ===== Heading ===== */
 .heading {
-  text-align: center;
   margin: 0;
+  will-change: transform, opacity;
+}
+
+.heading h2 {
+  text-align: center;
   font-family: var(--font-anton), "Anton", sans-serif;
   font-size: clamp(3.5rem, 6vw, 5rem);
   text-transform: uppercase;
   color: #1a1a1a;
   letter-spacing: 0.04em;
   line-height: 1.1;
-  will-change: transform, opacity;
 }
 
 .headingAccent {
