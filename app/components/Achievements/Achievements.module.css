@@ -13,8 +13,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 5rem 2rem 6rem;
-  gap: 3rem;
+  padding: 8rem 2rem 6rem;
+  gap: 4rem;
 }
 
 /* ── Watermark "IMPACT" texts ── */
@@ -65,39 +65,22 @@
 /* ===== Heading ===== */
 .heading {
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.heading h2 {
-  font-family: var(--font-anton), "Anton", sans-serif;
-  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
-  text-transform: uppercase;
-  color: var(--color-light);
-  letter-spacing: 0.08em;
-  line-height: 1.05;
   margin: 0;
-}
-
-.headingSub {
-  font-family: var(--font-playfair-display), "Playfair Display", serif;
-  font-style: italic;
-  font-size: clamp(0.9rem, 2vw, 1.2rem);
-  color: var(--color-light);
+  font-family: var(--font-anton), "Anton", sans-serif;
+  font-size: clamp(3.5rem, 6vw, 5rem);
+  text-transform: uppercase;
+  color: #1a1a1a;
   letter-spacing: 0.04em;
+  line-height: 1.1;
+  will-change: transform, opacity;
 }
 
-.headingSub::before,
-.headingSub::after {
-  content: "";
+.headingAccent {
+  color: var(--color-light, #faf6ec);
+  background: #1a1a1a;
+  padding: 0 0.5rem;
   display: inline-block;
-  width: 3rem;
-  height: 1px;
-  background: var(--color-light);
-  vertical-align: middle;
-  margin: 0 0.6rem;
+  transform: translateY(-2px);
 }
 
 /* ===== Paper Stack Wrapper ===== */
@@ -106,6 +89,7 @@
   width: 100%;
   max-width: 520px;
   height: 560px;
+  perspective: 1000px;
 }
 
 /* ===== Card ===== */
@@ -120,7 +104,7 @@
   background-image: url("/achievements/paper.webp");
   background-size: cover;
   background-position: center;
-  border-radius: 2px;
+  border: 1.5px solid rgba(26, 26, 26, 0.88);
   box-shadow:
     4px 8px 30px rgba(0, 0, 0, 0.18),
     0 2px 8px rgba(0, 0, 0, 0.08);
@@ -129,7 +113,19 @@
   flex-direction: column;
   overflow: hidden;
   transform-origin: center center;
-  will-change: transform, opacity;
+  will-change: transform, opacity, box-shadow;
+  touch-action: none;
+}
+
+.cardGrab {
+  cursor: grab;
+}
+
+.cardDragging {
+  cursor: grabbing;
+  box-shadow:
+    15px 25px 40px rgba(0, 0, 0, 0.25),
+    0 5px 15px rgba(0, 0, 0, 0.15) !important;
 }
 
 /* ── Achievement Image ── */
@@ -138,53 +134,49 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(26, 26, 26, 0.88);
   flex-shrink: 0;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
+  pointer-events: none;
 }
 
 .cardImage {
   object-fit: cover;
   width: 100%;
   height: 100%;
-  filter: sepia(0.08) saturate(0.95);
+  transition:
+    filter 0.4s ease,
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
 }
-
 /* ── Title ── */
 .cardTitle {
   font-family: var(--font-playfair-display), "Playfair Display", serif;
-  font-size: clamp(1.3rem, 3.5vw, 1.75rem);
+  font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+  font-style: italic;
   font-weight: 700;
   color: #1a1a1a;
   line-height: 1.25;
-  margin: 0 0 0.6rem;
+  margin: 0 0 0.8rem;
   flex-shrink: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  pointer-events: none;
 }
 
 /* ── Description ── */
 .cardDesc {
   font-family: var(--font-inter), "Inter", sans-serif;
-  font-size: 0.88rem;
-  color: #4a4a4a;
+  font-size: 0.95rem;
+  color: rgba(26, 26, 26, 0.8);
   line-height: 1.6;
   margin: 0;
   flex: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  pointer-events: none;
 }
 
 /* ── Navigation Row ── */
 .navRow {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
   margin-top: auto;
@@ -192,183 +184,98 @@
   flex-shrink: 0;
 }
 
-.prevBtn,
-.nextBtn {
-  font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  padding: 0.4rem 1.1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  border: none;
-  transition:
-    background 0.25s ease,
-    color 0.25s ease,
-    transform 0.2s ease,
-    box-shadow 0.25s ease;
-}
-
-.prevBtn {
-  color: #4a4a4a;
-  background: transparent;
-  border: 1.5px solid rgba(0, 0, 0, 0.2);
-}
-
-.prevBtn:hover {
-  background: rgba(0, 0, 0, 0.06);
-  border-color: rgba(0, 0, 0, 0.35);
-  transform: translateX(-2px);
-}
-
-.prevBtn:active {
-  transform: translateX(0);
-}
-
-.nextBtn {
-  color: #faf6ec;
-  background: #1a1a1a;
-  box-shadow: 2px 3px 0px rgba(0, 0, 0, 0.2);
-}
-
-.nextBtn:hover {
-  background: #2a2a2a;
-  box-shadow: 3px 4px 0px rgba(0, 0, 0, 0.25);
-  transform: translateY(-1px);
-}
-
-.nextBtn:active {
-  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
-  transform: translateY(1px);
-}
-
-/* ── Counter ── */
 .counter {
   font-family: var(--font-space-mono), "Space Mono", monospace;
   font-size: 0.75rem;
   color: rgba(60, 60, 60, 0.6);
-  margin-right: auto;
+  pointer-events: none;
+}
+
+.swipeInstruction {
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.7rem;
+  color: rgba(26, 26, 26, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  pointer-events: none;
 }
 
 /* ── View All Button ── */
 .viewAllBtn {
   font-family: var(--font-space-mono), "Space Mono", monospace;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--color-light);
-  border: 2px solid var(--color-light);
-  padding: 0.7rem 2rem;
+  color: #faf6ec;
+  background: #1a1a1a;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+  padding: 1rem 2.5rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.8rem;
+  margin-top: -1.5rem;
   transition:
-    background 0.3s ease,
-    color 0.3s ease,
-    transform 0.2s ease;
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.3s ease;
+  will-change: transform, opacity;
 }
 
 .viewAllBtn:hover {
-  background: var(--color-light);
-  color: #1a1a1a;
+  background: #2a2a2a;
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.25);
   transform: translateY(-2px);
 }
 
 .viewAllBtn:active {
-  transform: translateY(0);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+  transform: translateY(2px);
 }
 
 /* ===== RESPONSIVE ===== */
 
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 6rem 1.5rem 5rem;
+    gap: 3rem;
+  }
+}
+
 @media screen and (max-width: 600px) {
   .container {
-    padding: 4rem 1rem 5rem;
-    gap: 2rem;
+    padding: 5rem 1rem 4rem;
   }
-
-  .watermark1 {
-    font-size: 8rem;
-    opacity: 0.12;
-  }
-
-  .watermark2 {
-    font-size: 6.5rem;
-    opacity: 0.09;
-  }
-
-  .watermark3 {
-    font-size: 5rem;
-    opacity: 0.06;
-  }
-
   .stackWrapper {
     height: 480px;
     max-width: 100%;
   }
-
   .card {
     height: 440px;
-    padding: 1.2rem 1.2rem 1.2rem;
+    padding: 1.2rem;
     left: 10px;
     right: 10px;
   }
-
+  .watermark1 {
+    font-size: 8rem;
+    opacity: 0.12;
+  }
+  .watermark2 {
+    font-size: 6.5rem;
+    opacity: 0.09;
+  }
+  .watermark3 {
+    font-size: 5rem;
+    opacity: 0.06;
+  }
   .cardImageWrap {
-    margin-bottom: 0.8rem;
+    margin-bottom: 1.2rem;
   }
-
   .cardTitle {
-    font-size: 1.2rem;
-    margin-bottom: 0.4rem;
+    font-size: 1.5rem;
   }
-
   .cardDesc {
-    font-size: 0.82rem;
-    line-height: 1.5;
-  }
-
-  .headingSub::before,
-  .headingSub::after {
-    width: 1.5rem;
-  }
-}
-
-@media screen and (max-width: 400px) {
-  .stackWrapper {
-    height: 440px;
-  }
-
-  .card {
-    height: 400px;
-    padding: 1rem 1rem 0.8rem;
-    left: 5px;
-    right: 5px;
-  }
-
-  .cardImageWrap {
-    margin-bottom: 0.6rem;
-  }
-
-  .cardTitle {
-    font-size: 1.1rem;
-    margin-bottom: 0.3rem;
-  }
-
-  .cardDesc {
-    font-size: 0.78rem;
-  }
-
-  .prevBtn,
-  .nextBtn {
-    font-size: 0.72rem;
-    padding: 0.3rem 0.8rem;
-  }
-
-  .counter {
-    font-size: 0.65rem;
+    font-size: 0.9rem;
   }
 }

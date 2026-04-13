@@ -6,7 +6,7 @@ import styles from "./Achievements.module.css";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
+import { FiArrowUpRight } from "react-icons/fi";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -41,12 +41,6 @@ const achievements = [
     image_url:
       "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop",
   },
-  {
-    title: "Best IEDC in Kerala",
-    desc: "Recognized as the best Innovation and Entrepreneurship Development Centre in Kerala by the Kerala Startup Mission.",
-    image_url:
-      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop",
-  },
 ];
 
 const getStackOffset = (index: number) => {
@@ -63,240 +57,185 @@ const getStackOffset = (index: number) => {
 
 export default function Achievements() {
   const sectionRef = useRef<HTMLElement>(null);
-  const navref = useRef<HTMLElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const isAnimating = useRef(false);
-  const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const hasIntroPlayed = useRef(false);
+  const isInteracting = useRef(false);
 
-  const getVisibleIndices = useCallback(() => {
-    const indices: number[] = [];
-    for (let i = 0; i < Math.min(4, achievements.length); i++) {
-      indices.push((currentIndex + i) % achievements.length);
-    }
-    return indices;
-  }, [currentIndex]);
+  // Drag Physics State
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const currentX = useRef(0);
+  const currentY = useRef(0);
+  const startTimestamp = useRef(0);
 
-  const visibleIndices = getVisibleIndices();
-
-  const navigate = useCallback(
-    (direction: "next" | "prev") => {
-      if (isAnimating.current) return;
-      isAnimating.current = true;
-
-      const isNext = direction === "next";
-
-      if (isNext) {
-        // ===== NEXT: Throw top card away, then update state =====
-        const topCard = cardRefs.current[0];
-        if (!topCard) {
-          isAnimating.current = false;
-          return;
-        }
-
-        const tl = gsap.timeline({
-          onComplete: () => {
-            setCurrentIndex((prev) => (prev + 1) % achievements.length);
-            isAnimating.current = false;
-          },
-        });
-
-        tl.to(topCard, {
-          y: -40,
-          rotation: 6,
-          scale: 1.03,
-          boxShadow: "8px 18px 50px rgba(0,0,0,0.3)",
-          duration: 0.25,
-          ease: "power2.out",
-        }).to(topCard, {
-          y: -100,
-          opacity: 0,
-          rotation: 12,
-          scale: 0.9,
-          duration: 0.3,
-          ease: "power3.in",
-        });
-
-        for (let i = 1; i < Math.min(4, achievements.length); i++) {
-          const card = cardRefs.current[i];
-          if (!card) continue;
-          const target = getStackOffset(i - 1);
-          tl.to(
-            card,
-            {
-              rotation: target.rotate,
-              x: target.x,
-              y: target.y,
-              scale: target.scale,
-              duration: 0.35,
-              ease: "power2.out",
-            },
-            "-=0.25",
-          );
-        }
-      } else {
-        // ===== PREV: Update state immediately, then animate dropping in =====
-        setCurrentIndex(
-          (prev) => (prev - 1 + achievements.length) % achievements.length,
-        );
-
-        // Use a brief timeout to let React render the previous card at index 0
-        setTimeout(() => {
-          const newTopCard = cardRefs.current[0];
-          if (!newTopCard) return;
-
-          // Animate new top card dropping IN
-          gsap.fromTo(
-            newTopCard,
-            { y: -80, opacity: 0, rotation: -10, scale: 1.05 },
-            {
-              y: 0,
-              opacity: 1,
-              rotation: 0,
-              scale: 1,
-              duration: 0.4,
-              ease: "back.out(1.2)",
-              onComplete: () => {
-                isAnimating.current = false;
-              },
-            },
-          );
-
-          // Animate the rest of the stack sliding DOWN
-          for (let i = 1; i < Math.min(4, achievements.length); i++) {
-            const card = cardRefs.current[i];
-            if (!card) continue;
-            const prevTarget = getStackOffset(i - 1);
-            const newTarget = getStackOffset(i);
-            gsap.fromTo(
-              card,
-              {
-                rotation: prevTarget.rotate,
-                x: prevTarget.x,
-                y: prevTarget.y,
-                scale: prevTarget.scale,
-              },
-              {
-                rotation: newTarget.rotate,
-                x: newTarget.x,
-                y: newTarget.y,
-                scale: newTarget.scale,
-                duration: 0.4,
-                ease: "power2.out",
-              },
-            );
-          }
-        }, 0);
-      }
-    },
-    [achievements.length],
-  );
-
+  // Handle snap to position whenever currentIndex updates
   useEffect(() => {
-    //change color of navbar on enter and leaving
-    const navbar = document.getElementById("navbar-ref");
-    if (!navbar) return;
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 0%",
-        toggleActions: "play none none reverse",
-      },
-    });
-    tl.to(navbar, {
-      "--nav-color-rgb": "var(--achivements-color-rgb)",
-    });
-
-    return () => {
-      tl.kill();
-    };
-  }, []);
-
-  const startAutoPlay = useCallback(() => {
-    if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-    autoPlayRef.current = setInterval(() => {
-      navigate("next");
-    }, 3000);
-  }, [navigate]);
-
-  useEffect(() => {
-    return () => {
-      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!hasIntroPlayed.current) return;
-
+    if (isInteracting.current) return;
     cardRefs.current.forEach((card, i) => {
       if (!card) return;
-      const offset = getStackOffset(i);
-
-      if (isAnimating.current) {
-        gsap.set(card, { zIndex: 10 - i });
-      } else {
-        gsap.set(card, {
-          rotation: offset.rotate,
-          x: offset.x,
-          y: offset.y,
-          scale: offset.scale,
-          opacity: 1,
-          zIndex: 10 - i,
-          clearProps: "boxShadow",
-        });
-      }
+      let stackPos = (i - currentIndex + achievements.length) % achievements.length;
+      const offset = getStackOffset(stackPos);
+      
+      gsap.to(card, {
+        rotation: offset.rotate,
+        x: offset.x,
+        y: offset.y,
+        scale: offset.scale,
+        opacity: 1, // Keep always visible so shuffle is seen seamlessly
+        duration: 0.5,
+        ease: "back.out(1.2)",
+        zIndex: 10 - stackPos,
+        pointerEvents: stackPos === 0 ? "auto" : "none",
+        overwrite: "auto"
+      });
+      
+      card.className = `${styles.card} ${stackPos === 0 ? styles.cardGrab : ""}`;
     });
   }, [currentIndex]);
+
+  // Pointer event handlers for physics-based throwing
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, cardIndex: number) => {
+    let stackPos = (cardIndex - currentIndex + achievements.length) % achievements.length;
+    if (stackPos !== 0) return; // Only allow dragging the top card
+    
+    isInteracting.current = true;
+    const target = e.currentTarget;
+    target.setPointerCapture(e.pointerId);
+
+    // Initial touch coordinates
+    startX.current = e.clientX;
+    startY.current = e.clientY;
+    currentX.current = 0;
+    currentY.current = 0;
+    startTimestamp.current = Date.now();
+
+    target.classList.add(styles.cardDragging);
+    gsap.killTweensOf(target); // Stop snapping tweens
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>, cardIndex: number) => {
+    let stackPos = (cardIndex - currentIndex + achievements.length) % achievements.length;
+    if (!isInteracting.current || stackPos !== 0) return;
+
+    const target = e.currentTarget;
+    currentX.current = e.clientX - startX.current;
+    currentY.current = e.clientY - startY.current;
+
+    // Apply rotation based on how far we've dragged X
+    const rotation = currentX.current * 0.04;
+
+    gsap.set(target, {
+      x: currentX.current,
+      y: currentY.current,
+      rotation: rotation,
+    });
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>, cardIndex: number) => {
+    let stackPos = (cardIndex - currentIndex + achievements.length) % achievements.length;
+    if (!isInteracting.current || stackPos !== 0) return;
+    
+    isInteracting.current = false;
+    const target = e.currentTarget;
+    target.releasePointerCapture(e.pointerId);
+    target.classList.remove(styles.cardDragging);
+
+    const timeDiff = Date.now() - startTimestamp.current;
+    
+    // Determine velocity
+    const velocityX = currentX.current / timeDiff;
+
+    // Throw thresholds
+    const throwThreshold = 120; // 120px drag
+    const velocityThreshold = 0.8; // px per ms
+
+    const isThrown = 
+      Math.abs(currentX.current) > throwThreshold || 
+      Math.abs(velocityX) > velocityThreshold;
+
+    if (isThrown) {
+      const direction = currentX.current > 0 ? 1 : -1;
+      
+      // Swing card out to the side (deck shuffle motion)
+      gsap.to(target, {
+        x: window.innerWidth > 600 ? 400 * direction : 250 * direction,
+        y: currentY.current + 30,
+        rotation: direction * 25,
+        scale: 0.9,
+        duration: 0.25,
+        ease: "power2.out",
+        onComplete: () => {
+          gsap.set(target, { zIndex: 0 });
+          setCurrentIndex((prev) => (prev + 1) % achievements.length);
+        }
+      });
+    } else {
+      // Snap it back with a spring
+      gsap.to(target, {
+        x: 0,
+        y: 0,
+        rotation: 0,
+        scale: 1,
+        duration: 0.55,
+        ease: "elastic.out(1, 0.6)",
+      });
+    }
+  };
 
   useGSAP(
     () => {
+      // Navbar color transition
+      const navbar = document.getElementById("navbar-ref");
+      if (navbar) {
+        const navTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 0%",
+            toggleActions: "play none none reverse",
+          },
+        });
+        navTl.to(navbar, {
+          "--nav-color-rgb": "var(--achivements-color-rgb)",
+        });
+      }
+
+      // Initial Scroll Animations
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduceMotion) {
+        gsap.set([`.${styles.heading}`, `.${styles.stackWrapper}`, `.${styles.viewAllBtn}`], { clearProps: "all", opacity: 1 });
+        return;
+      }
+
       const masterTl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top 75%",
           toggleActions: "play none none reverse",
         },
-        onComplete: () => {
-          hasIntroPlayed.current = true;
-          startAutoPlay();
-        },
-        onLeaveBack: () => {
-          hasIntroPlayed.current = false;
-          if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-        },
       });
 
       masterTl.fromTo(
         `.${styles.heading}`,
         { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.7,
-          ease: "power3.out",
-        },
+        { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }
       );
 
-      const count = Math.min(cardRefs.current.length, 4);
-      for (let i = 0; i < count; i++) {
-        const card = cardRefs.current[i];
-        if (!card) continue;
-        gsap.set(card, {
-          opacity: 0,
-          x: 600,
-          y: -80,
-          rotation: 25 + i * 8,
-          scale: 0.85,
-        });
-      }
-      masterTl.set(`.${styles.stackWrapper}`, { opacity: 1 }, "-=0.2");
+      masterTl.set(`.${styles.stackWrapper}`, { opacity: 1 }, "-=0.3");
 
-      for (let i = count - 1; i >= 0; i--) {
-        const card = cardRefs.current[i];
-        if (!card) continue;
+      cardRefs.current.forEach((card, i) => {
+        if (!card) return;
         const target = getStackOffset(i);
+        
+        // Initial state
+        gsap.set(card, {
+          x: 400,
+          y: -100,
+          rotation: 30 + i * 15,
+          scale: 0.8,
+          opacity: 0,
+        });
 
+        // Drop in
         masterTl.to(
           card,
           {
@@ -306,65 +245,55 @@ export default function Achievements() {
             scale: target.scale,
             opacity: 1,
             duration: 0.55,
-            ease: "back.out(1.4)",
+            ease: "back.out(1.2)",
           },
-          i === count - 1 ? "-=0.1" : "-=0.2",
+          "-=0.25"
         );
-      }
+      });
 
-      /* ─ Phase 4: View All button fades up ─ */
       masterTl.fromTo(
         `.${styles.viewAllBtn}`,
         { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.5,
-          ease: "power2.out",
-        },
-        "-=0.15",
+        { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+        "-=0.1"
       );
     },
-    { scope: sectionRef },
+    { scope: sectionRef }
   );
 
   return (
     <section className={styles.container} id="achievements" ref={sectionRef}>
       {/* ── Background watermarks ── */}
       <div className={styles.watermarkWrap} aria-hidden="true">
-        <span className={`${styles.watermark} ${styles.watermark1}`}>
-          IMPACT
-        </span>
-        <span className={`${styles.watermark} ${styles.watermark2}`}>
-          IMPACT
-        </span>
-        <span className={`${styles.watermark} ${styles.watermark3}`}>
-          IMPACT
-        </span>
+        <span className={`${styles.watermark} ${styles.watermark1}`}>IMPACT</span>
+        <span className={`${styles.watermark} ${styles.watermark2}`}>IMPACT</span>
+        <span className={`${styles.watermark} ${styles.watermark3}`}>IMPACT</span>
       </div>
 
       {/* ── Heading ── */}
       <div className={styles.heading} style={{ opacity: 0 }}>
-        <h2>Achievements</h2>
-        <span className={styles.headingSub}>/ documented impact</span>
+        <h2>
+          <span className={styles.headingAccent}>PROVEN</span>
+          <br />
+          IMPACT
+        </h2>
       </div>
 
-      {/* ── Paper stack ── */}
+      {/* ── Physical Throwable Stack ── */}
       <div className={styles.stackWrapper} style={{ opacity: 0 }}>
-        {visibleIndices.map((achIndex, stackPos) => {
-          const ach = achievements[achIndex];
-          const offset = getStackOffset(stackPos);
+        {achievements.map((ach, achIndex) => {
+          let stackPos = (achIndex - currentIndex + achievements.length) % achievements.length;
           return (
             <div
-              className={styles.card}
+              className={`${styles.card} ${stackPos === 0 ? styles.cardGrab : ""}`}
               key={`card-${achIndex}`}
               ref={(el) => {
-                cardRefs.current[stackPos] = el;
+                cardRefs.current[achIndex] = el;
               }}
-              style={{
-                zIndex: 10 - stackPos,
-                transform: `rotate(${offset.rotate}deg) translate(${offset.x}px, ${offset.y}px) scale(${offset.scale})`,
-              }}
+              onPointerDown={(e) => handlePointerDown(e, achIndex)}
+              onPointerMove={(e) => handlePointerMove(e, achIndex)}
+              onPointerUp={(e) => handlePointerUp(e, achIndex)}
+              onPointerCancel={(e) => handlePointerUp(e, achIndex)}
             >
               {/* Image */}
               <div className={styles.cardImageWrap}>
@@ -377,6 +306,7 @@ export default function Achievements() {
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = "none";
                   }}
+                  draggable={false}
                 />
               </div>
 
@@ -386,30 +316,14 @@ export default function Achievements() {
               {/* Description */}
               <p className={styles.cardDesc}>{ach.desc}</p>
 
-              {/* Navigation */}
+              {/* Interaction Details */}
               <div className={styles.navRow}>
                 <span className={styles.counter}>
                   {achIndex + 1} / {achievements.length}
                 </span>
-                <button
-                  className={styles.prevBtn}
-                  onClick={() => {
-                    navigate("prev");
-                    startAutoPlay();
-                  }}
-                  aria-label="Previous achievement"
-                >
-                  <FiArrowLeft />
-                  Prev
-                </button>
-                <button
-                  className={styles.nextBtn}
-                  onClick={() => navigate("next")}
-                  aria-label="Next achievement"
-                >
-                  Next
-                  <FiArrowRight />
-                </button>
+                <span className={styles.swipeInstruction}>
+                  {stackPos === 0 ? "Swipe to flip" : "Waiting..."}
+                </span>
               </div>
             </div>
           );
@@ -417,9 +331,9 @@ export default function Achievements() {
       </div>
 
       {/* ── View All button ── */}
-      <a href="/achievements" className={styles.viewAllBtn}>
+      <a href="/achievements" className={styles.viewAllBtn} style={{ opacity: 0 }}>
         View All Achievements
-        <FiArrowRight />
+        <FiArrowUpRight size={20} />
       </a>
     </section>
   );
