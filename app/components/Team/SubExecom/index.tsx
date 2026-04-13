@@ -43,7 +43,7 @@ const members = [
 const DUPLICATE_COUNT = Math.max(3, Math.ceil(20 / members.length));
 
 export default function SubExecom() {
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -108,20 +108,8 @@ export default function SubExecom() {
   );
 
   return (
-    <section className={styles.team} ref={sectionRef}>
-      <div className={styles.bgOverlay} />
-
-      <span className={`${styles.cornerCross} ${styles.topLeft}`}>+</span>
-      <span className={`${styles.cornerCross} ${styles.topRight}`}>+</span>
-      <span className={`${styles.cornerCross} ${styles.bottomLeft}`}>+</span>
-      <span className={`${styles.cornerCross} ${styles.bottomRight}`}>+</span>
-
-      <h3
-        className={`${styles.subHeading} ${styles.centerTextOnDesktop}`}
-        style={{ marginBottom: "1.5rem" }}
-      >
-        Sub Execom
-      </h3>
+    <div ref={sectionRef}>
+      <h3 className={styles.subHeading}>Sub Execom</h3>
       <div className={styles.trackWrapper}>
         <div ref={trackRef} className={styles.track}>
           {[...Array(DUPLICATE_COUNT)].map((_, groupIndex) => (
@@ -160,6 +148,6 @@ export default function SubExecom() {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

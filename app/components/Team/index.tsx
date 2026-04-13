@@ -17,50 +17,31 @@ export default function Team() {
 
   useGSAP(
     () => {
-      // Header Reveal
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      if (reduceMotion) {
+        gsap.set([`.${styles.revealPanel}`], {
+          clearProps: "all",
+          opacity: 1,
+        });
+        return;
+      }
+
+      // Intro Panels
       gsap.fromTo(
-        `.${styles.headingBlock}`,
-        { y: 60, opacity: 0 },
+        `.${styles.revealPanel}`,
+        { y: 42, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
+          duration: 0.7,
+          stagger: 0.12,
           ease: "power3.out",
           scrollTrigger: {
             trigger: `.${styles.headingBlock}`,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        },
-      );
-
-      gsap.fromTo(
-        `.${styles.tagline}`,
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          delay: 0.2,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: `.${styles.headingBlock}`,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        },
-      );
-
-      gsap.fromTo(
-        `.${styles.divider}`,
-        { scaleX: 0 },
-        {
-          scaleX: 1,
-          duration: 0.8,
-          ease: "power2.inOut",
-          scrollTrigger: {
-            trigger: `.${styles.divider}`,
-            start: "top 90%",
+            start: "top 80%",
             toggleActions: "play none none reverse",
           },
         },
@@ -81,9 +62,8 @@ export default function Team() {
       },
     });
     // to match the nav color to the section color
-    // achivements section has color #FCC503
     tl.to(navbar, {
-      "--nav-color-rgb": "var(--team-color-rgb)",
+      "--nav-color-rgb": "var(--team-color-rgb, 26, 26, 26)",
       "--nav-text-color": "var(--color-white)",
       "--nav-logo-color": "var(--color-white)",
     });
@@ -95,9 +75,29 @@ export default function Team() {
 
   return (
     <section className={styles.teamMain} id="team" ref={sectionRef}>
-      <Faculty />
-      <Execom />
-      <SubExecom />
+      <div className={styles.bgOverlay} />
+
+      <div className={styles.contentWrapper}>
+        <div
+          className={`${styles.headingBlock} ${styles.revealPanel}`}
+          style={{ opacity: 0, marginBottom: "3.5rem" }}
+        >
+          <h2 className={styles.heading}>
+            <span className={styles.the}>THE</span>
+            <span className={styles.crew}>CREW</span>
+          </h2>
+        </div>
+
+        <div className={styles.teamGroup}>
+          <Faculty />
+        </div>
+        <div className={styles.teamGroup}>
+          <Execom />
+        </div>
+        <div className={styles.teamGroup}>
+          <SubExecom />
+        </div>
+      </div>
     </section>
   );
 }
