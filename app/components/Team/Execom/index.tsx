@@ -5,7 +5,7 @@ import Image from "next/image";
 import styles from "../Team.module.css";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { FiTwitter, FiLinkedin } from "react-icons/fi";
+import { FiLinkedin } from "react-icons/fi";
 import data from "@data/data";
 
 const members = data.team;

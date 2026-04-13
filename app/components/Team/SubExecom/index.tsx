@@ -5,14 +5,39 @@ import Image from "next/image";
 import styles from "../Team.module.css";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { FiLinkedin, FiGithub } from "react-icons/fi";
+import { FiLinkedin } from "react-icons/fi";
 
 const members = [
-  { name: "Jessie Parker", designation: "Frontend Dev", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400&h=400" },
-  { name: "Robin Banks", designation: "Backend Dev", image: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&q=80&w=400&h=400" },
-  { name: "Drew Carey", designation: "UI/UX Designer", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=400&h=400" },
-  { name: "Skyler White", designation: "Event Manager", image: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=80&w=400&h=400" },
-  { name: "Kendall Roy", designation: "Social Media", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=400&h=400" },
+  {
+    name: "Jessie Parker",
+    designation: "Frontend Dev",
+    image:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400&h=400",
+  },
+  {
+    name: "Robin Banks",
+    designation: "Backend Dev",
+    image:
+      "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&q=80&w=400&h=400",
+  },
+  {
+    name: "Drew Carey",
+    designation: "UI/UX Designer",
+    image:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=400&h=400",
+  },
+  {
+    name: "Skyler White",
+    designation: "Event Manager",
+    image:
+      "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=80&w=400&h=400",
+  },
+  {
+    name: "Kendall Roy",
+    designation: "Social Media",
+    image:
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=400&h=400",
+  },
 ];
 
 const DUPLICATE_COUNT = Math.max(3, Math.ceil(20 / members.length));
@@ -50,14 +75,14 @@ export default function SubExecom() {
       if (track) {
         const initLoop = () => {
           if (scrollTween) scrollTween.kill();
-          
+
           const trackGroups = track.querySelectorAll(`.${styles.trackGroup}`);
           if (trackGroups.length > 0) {
             const firstGroup = trackGroups[0] as HTMLElement;
             const groupWidth = firstGroup.offsetWidth;
 
-            gsap.set(track, { x: 0 }); 
-            
+            gsap.set(track, { x: 0 });
+
             scrollTween = gsap.to(track, {
               x: -groupWidth,
               ease: "none",
@@ -79,7 +104,7 @@ export default function SubExecom() {
         };
       }
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
   return (
@@ -91,22 +116,42 @@ export default function SubExecom() {
       <span className={`${styles.cornerCross} ${styles.bottomLeft}`}>+</span>
       <span className={`${styles.cornerCross} ${styles.bottomRight}`}>+</span>
 
-      <h3 className={`${styles.subHeading} ${styles.centerTextOnDesktop}`} style={{ marginBottom: '1.5rem' }}>Sub Execom</h3>
+      <h3
+        className={`${styles.subHeading} ${styles.centerTextOnDesktop}`}
+        style={{ marginBottom: "1.5rem" }}
+      >
+        Sub Execom
+      </h3>
       <div className={styles.trackWrapper}>
         <div ref={trackRef} className={styles.track}>
           {[...Array(DUPLICATE_COUNT)].map((_, groupIndex) => (
             <div className={styles.trackGroup} key={groupIndex}>
               {members.map((member, i) => (
-                <div className={`${styles.card} ${styles.cardSubExecom}`} key={`${member.name}-${i}-${groupIndex}`} style={{ opacity: 0 }}>
+                <div
+                  className={`${styles.card} ${styles.cardSubExecom}`}
+                  key={`${member.name}-${i}-${groupIndex}`}
+                  style={{ opacity: 0 }}
+                >
                   <div className={styles.photo}>
-                    <Image src={member.image} alt={member.name} fill sizes="260px" className={styles.photoImg} />
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      sizes="260px"
+                      className={styles.photoImg}
+                    />
                   </div>
                   <div className={styles.info}>
                     <h4 className={styles.name}>{member.name}</h4>
                     <p className={styles.designation}>{member.designation}</p>
                     <div className={styles.socials}>
-                      <a href="#" className={styles.socialIcon} aria-label="LinkedIn"><FiLinkedin /></a>
-                      <a href="#" className={styles.socialIcon} aria-label="GitHub"><FiGithub /></a>
+                      <a
+                        href="#"
+                        className={styles.socialIcon}
+                        aria-label="LinkedIn"
+                      >
+                        <FiLinkedin />
+                      </a>
                     </div>
                   </div>
                 </div>
