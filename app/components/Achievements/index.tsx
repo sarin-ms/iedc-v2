@@ -15,7 +15,7 @@ const achievements = [
     title: "Won State Innovation Award",
     desc: "SSF startups mentored by our team received the coveted State Innovation Award, enhancing our credibility across the ecosystem.",
     image_url:
-      "https://images.unsplash.com/photo-1567427018141-0584cfcbf1b6?w=600&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop",
   },
   {
     title: "National Hackathon Champions",
@@ -74,7 +74,7 @@ export default function Achievements() {
     autoPlayTimer.current = setTimeout(() => {
       const target = cardRefs.current[currentIndex];
       if (!target || isInteracting.current) return;
-      
+
       // Auto-shuffle motion (swing right)
       gsap.to(target, {
         x: window.innerWidth > 600 ? 400 : 250,
@@ -86,7 +86,7 @@ export default function Achievements() {
         onComplete: () => {
           gsap.set(target, { zIndex: 0 });
           setCurrentIndex((prev) => (prev + 1) % achievements.length);
-        }
+        },
       });
     }, 3500);
   }, [currentIndex]);
@@ -96,9 +96,10 @@ export default function Achievements() {
     if (isInteracting.current) return;
     cardRefs.current.forEach((card, i) => {
       if (!card) return;
-      let stackPos = (i - currentIndex + achievements.length) % achievements.length;
+      let stackPos =
+        (i - currentIndex + achievements.length) % achievements.length;
       const offset = getStackOffset(stackPos);
-      
+
       gsap.to(card, {
         rotation: offset.rotate,
         x: offset.x,
@@ -109,9 +110,9 @@ export default function Achievements() {
         ease: "back.out(1.2)",
         zIndex: 10 - stackPos,
         pointerEvents: stackPos === 0 ? "auto" : "none",
-        overwrite: "auto"
+        overwrite: "auto",
       });
-      
+
       card.className = `${styles.card} ${stackPos === 0 ? styles.cardGrab : ""}`;
     });
 
@@ -124,10 +125,14 @@ export default function Achievements() {
   }, [currentIndex, startAutoPlay]);
 
   // Pointer event handlers for physics-based throwing
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, cardIndex: number) => {
-    let stackPos = (cardIndex - currentIndex + achievements.length) % achievements.length;
+  const handlePointerDown = (
+    e: React.PointerEvent<HTMLDivElement>,
+    cardIndex: number,
+  ) => {
+    let stackPos =
+      (cardIndex - currentIndex + achievements.length) % achievements.length;
     if (stackPos !== 0) return; // Only allow dragging the top card
-    
+
     isInteracting.current = true;
     if (autoPlayTimer.current) clearTimeout(autoPlayTimer.current);
 
@@ -145,8 +150,12 @@ export default function Achievements() {
     gsap.killTweensOf(target); // Stop snapping tweens
   };
 
-  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>, cardIndex: number) => {
-    let stackPos = (cardIndex - currentIndex + achievements.length) % achievements.length;
+  const handlePointerMove = (
+    e: React.PointerEvent<HTMLDivElement>,
+    cardIndex: number,
+  ) => {
+    let stackPos =
+      (cardIndex - currentIndex + achievements.length) % achievements.length;
     if (!isInteracting.current || stackPos !== 0) return;
 
     const target = e.currentTarget;
@@ -163,17 +172,21 @@ export default function Achievements() {
     });
   };
 
-  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>, cardIndex: number) => {
-    let stackPos = (cardIndex - currentIndex + achievements.length) % achievements.length;
+  const handlePointerUp = (
+    e: React.PointerEvent<HTMLDivElement>,
+    cardIndex: number,
+  ) => {
+    let stackPos =
+      (cardIndex - currentIndex + achievements.length) % achievements.length;
     if (!isInteracting.current || stackPos !== 0) return;
-    
+
     isInteracting.current = false;
     const target = e.currentTarget;
     target.releasePointerCapture(e.pointerId);
     target.classList.remove(styles.cardDragging);
 
     const timeDiff = Date.now() - startTimestamp.current;
-    
+
     // Determine velocity
     const velocityX = currentX.current / timeDiff;
 
@@ -181,13 +194,13 @@ export default function Achievements() {
     const throwThreshold = 120; // 120px drag
     const velocityThreshold = 0.8; // px per ms
 
-    const isThrown = 
-      Math.abs(currentX.current) > throwThreshold || 
+    const isThrown =
+      Math.abs(currentX.current) > throwThreshold ||
       Math.abs(velocityX) > velocityThreshold;
 
     if (isThrown) {
       const direction = currentX.current > 0 ? 1 : -1;
-      
+
       // Swing card out to the side (deck shuffle motion)
       gsap.to(target, {
         x: window.innerWidth > 600 ? 400 * direction : 250 * direction,
@@ -199,7 +212,7 @@ export default function Achievements() {
         onComplete: () => {
           gsap.set(target, { zIndex: 0 });
           setCurrentIndex((prev) => (prev + 1) % achievements.length);
-        }
+        },
       });
     } else {
       // Snap it back with a spring
@@ -210,7 +223,7 @@ export default function Achievements() {
         scale: 1,
         duration: 0.55,
         ease: "elastic.out(1, 0.6)",
-        onComplete: startAutoPlay // Resume autoplay if they aborted drag
+        onComplete: startAutoPlay, // Resume autoplay if they aborted drag
       });
     }
   };
@@ -233,9 +246,18 @@ export default function Achievements() {
       }
 
       // Initial Scroll Animations
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
       if (reduceMotion) {
-        gsap.set([`.${styles.heading}`, `.${styles.stackWrapper}`, `.${styles.viewAllBtn}`], { clearProps: "all", opacity: 1 });
+        gsap.set(
+          [
+            `.${styles.heading}`,
+            `.${styles.stackWrapper}`,
+            `.${styles.viewAllBtn}`,
+          ],
+          { clearProps: "all", opacity: 1 },
+        );
         return;
       }
 
@@ -250,7 +272,7 @@ export default function Achievements() {
       masterTl.fromTo(
         `.${styles.heading}`,
         { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }
+        { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
       );
 
       masterTl.set(`.${styles.stackWrapper}`, { opacity: 1 }, "-=0.3");
@@ -258,7 +280,7 @@ export default function Achievements() {
       cardRefs.current.forEach((card, i) => {
         if (!card) return;
         const target = getStackOffset(i);
-        
+
         // Initial state
         gsap.set(card, {
           x: 400,
@@ -280,7 +302,7 @@ export default function Achievements() {
             duration: 0.55,
             ease: "back.out(1.2)",
           },
-          "-=0.25"
+          "-=0.25",
         );
       });
 
@@ -288,34 +310,38 @@ export default function Achievements() {
         `.${styles.viewAllBtn}`,
         { y: 30, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
-        "-=0.1"
+        "-=0.1",
       );
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
   return (
     <section className={styles.container} id="achievements" ref={sectionRef}>
       {/* ── Background watermarks ── */}
       <div className={styles.watermarkWrap} aria-hidden="true">
-        <span className={`${styles.watermark} ${styles.watermark1}`}>IMPACT</span>
-        <span className={`${styles.watermark} ${styles.watermark2}`}>IMPACT</span>
-        <span className={`${styles.watermark} ${styles.watermark3}`}>IMPACT</span>
+        <span className={`${styles.watermark} ${styles.watermark1}`}>
+          IMPACT
+        </span>
+        <span className={`${styles.watermark} ${styles.watermark2}`}>
+          IMPACT
+        </span>
+        <span className={`${styles.watermark} ${styles.watermark3}`}>
+          IMPACT
+        </span>
       </div>
 
       {/* ── Heading ── */}
       <div className={styles.heading} style={{ opacity: 0 }}>
-        <h2>
-          <span className={styles.headingAccent}>PROVEN</span>
-          <br />
-          IMPACT
-        </h2>
+        <h2>Achievements</h2>
       </div>
 
       {/* ── Physical Throwable Stack ── */}
       <div className={styles.stackWrapper} style={{ opacity: 0 }}>
         {achievements.map((ach, achIndex) => {
-          let stackPos = (achIndex - currentIndex + achievements.length) % achievements.length;
+          let stackPos =
+            (achIndex - currentIndex + achievements.length) %
+            achievements.length;
           return (
             <div
               className={`${styles.card} ${stackPos === 0 ? styles.cardGrab : ""}`}
@@ -364,7 +390,11 @@ export default function Achievements() {
       </div>
 
       {/* ── View All button ── */}
-      <a href="/achievements" className={styles.viewAllBtn} style={{ opacity: 0 }}>
+      <a
+        href="/achievements"
+        className={styles.viewAllBtn}
+        style={{ opacity: 0 }}
+      >
         View All Achievements
         <FiArrowUpRight size={20} />
       </a>

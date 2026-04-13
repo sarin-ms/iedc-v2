@@ -128,10 +128,6 @@ export default function Hero() {
               <span>Explore Bootcamp</span>
               <FiArrowUpRight aria-hidden="true" />
             </a>
-            <a href="#team" className={styles.secondaryCta}>
-              <span>Meet the crew</span>
-              <FiArrowRight aria-hidden="true" />
-            </a>
           </div>
 
           <div className={`${styles.statsGrid} ${styles.revealUp}`}>
@@ -154,7 +150,9 @@ export default function Hero() {
             </div>
 
             <div className={styles.posterBody}>
-              <p className={styles.posterLabel}>founder energy, campus timing</p>
+              <p className={styles.posterLabel}>
+                founder energy, campus timing
+              </p>
               <h2 className={styles.posterHeadline}>
                 Experiment.
                 <br />
