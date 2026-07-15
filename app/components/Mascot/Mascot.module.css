@@ -1,0 +1,257 @@
+.mascotSection {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 6rem 2rem;
+  background: linear-gradient(180deg, #f3ebde 0%, #ede6d9 100%);
+  border-top: 3.5px solid var(--color-primary);
+  border-bottom: 3.5px solid var(--color-primary);
+}
+
+.mascotSection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26, 26, 26, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 26, 26, 0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.textCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.kickerContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.kickerBar {
+  width: 5px;
+  height: 20px;
+  background-color: var(--color-accent);
+  display: inline-block;
+}
+
+.kickerText {
+  font-family: var(--font-posterman), "Posterman", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600; 
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--font-brunson), "Brunson", sans-serif;
+  font-size: clamp(3rem, 7vw, 4.5rem);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  color: var(--color-primary);
+  text-transform: uppercase;
+}
+
+.accentText {
+  color: var(--color-accent);
+}
+
+.description {
+  margin: 0.5rem 0 0;
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.75;
+  color: rgba(26, 26, 26, 0.85);
+  max-width: 36rem;
+}
+
+.rulesCard {
+  width: 100%;
+  max-width: 36rem;
+  border: 2px solid var(--color-primary);
+  background: #ffffff;
+  padding: 1.5rem 2rem;
+  box-shadow: 6px 6px 0 var(--color-primary);
+  margin-top: 1rem;
+}
+
+.rulesTitle {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+  border-bottom: 2.5px solid var(--color-accent);
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.rulesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.rulesList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--color-primary);
+}
+
+.ruleNumber {
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: var(--color-accent);
+  color: var(--color-primary);
+  padding: 0.1rem 0.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+  border: 1px solid var(--color-primary);
+}
+
+.imageCol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageWrapper {
+  position: relative;
+  width: min(380px, 100%);
+  aspect-ratio: 0.85;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageBackdrop {
+  position: absolute;
+  inset: 15% 5% 5% 5%;
+  border: 3.5px solid var(--color-primary);
+  background: #faf2d3;
+  box-shadow: 10px 10px 0 var(--color-primary);
+}
+
+.mascotImg {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  height: auto;
+  max-height: 110%;
+  object-fit: contain;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.imageWrapper:hover .mascotImg {
+  transform: translateY(-12px) scale(1.03);
+}
+
+.headerMobileRow {
+  display: block;
+}
+
+.mobileImageWrapper {
+  display: none;
+  position: relative;
+}
+
+.reveal {
+  will-change: transform, opacity;
+}
+
+@media screen and (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 5rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mascotSection {
+    padding: 4rem 1.2rem;
+  }
+
+  .imageCol {
+    display: none;
+  }
+
+  .headerMobileRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .heading {
+    flex-grow: 1;
+  }
+
+  .mobileImageWrapper {
+    display: block;
+    width: clamp(80px, 28vw, 160px);
+    aspect-ratio: 0.85;
+    flex-shrink: 0;
+    margin: 0;
+  }
+
+  .mobileBackdrop {
+    position: absolute;
+    inset: 15% 5% 5% 5%;
+    border: 2px solid var(--color-primary);
+    background: #faf2d3;
+    box-shadow: 4px 4px 0 var(--color-primary);
+  }
+
+  .mascotImgMobile {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: auto;
+    max-height: 130%;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .mobileImageWrapper:hover .mascotImgMobile {
+    transform: translateY(-5px) scale(1.02);
+  }
+
+  .rulesCard {
+    padding: 1.25rem 1.5rem;
+  }
+}
