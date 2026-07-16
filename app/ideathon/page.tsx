@@ -136,11 +136,14 @@ export default function IdeathonPage() {
         );
     }
 
+    if (!agreeTerms)
+      return setFormError(
+        "Please accept the competition guidelines to continue.",
+      );
     if (!paymentScreenshotFile)
       return setFormError("Please upload a screenshot of payment.");
     if (!upiId.trim()) return setFormError("UPI ID is required.");
 
-    setAgreeTerms(false);
     setShowGuidelinesModal(true);
   };
 
@@ -235,7 +238,7 @@ export default function IdeathonPage() {
 
   return (
     <>
-      <Navbar isMenuShown={false} mainUrl={"/"} />
+      <Navbar isMenuShown={false} />
       <main className={styles.ideathonPage}>
         <div className={styles.container}>
           <div className={styles.card}>
@@ -487,10 +490,87 @@ export default function IdeathonPage() {
 
                 <div className={styles.sectionHeader}>
                   <span className={styles.sectionNum}>04</span>
+                  <h2 className={styles.sectionTitle}>
+                    Competition Guidelines
+                  </h2>
+                </div>
+
+                <div className={styles.guidelinesInlineBox}>
+                  <ol className={styles.guidelinesInlineList}>
+                    <li>
+                      The competition consists of{" "}
+                      <strong>
+                        two rounds: Preliminary Round and Final Round.
+                      </strong>
+                    </li>
+                    <li>
+                      Only the <strong>shortlisted teams</strong> from the
+                      Preliminary Round will qualify for the{" "}
+                      <strong>Final Round</strong>, which will be held on{" "}
+                      <strong>
+                        1st August 2026 at College of Engineering Chengannur
+                        (CEC)
+                      </strong>
+                      .
+                    </li>
+                    <li>
+                      Teams are{" "}
+                      <strong>free to choose their own theme/idea</strong> for
+                      the Preliminary Round.
+                    </li>
+                    <li>
+                      Teams{" "}
+                      <strong>
+                        may change or refine their theme/idea before the Final
+                        Round
+                      </strong>{" "}
+                      if they develop a{" "}
+                      <strong>better or more improved concept</strong>.
+                    </li>
+                    <li>
+                      The <strong>Preliminary Round</strong> will be conducted{" "}
+                      <strong>online</strong>. Teams must submit their pitch in
+                      the <strong>prescribed format</strong>, which will be
+                      shared later.
+                    </li>
+                    <li>
+                      Registration will be considered confirmed upon successful
+                      completion of the process, and the{" "}
+                      <strong>
+                        participation fee once processed will not be subject to
+                        revision.
+                      </strong>
+                      .
+                    </li>
+                  </ol>
+
+                  <div className={styles.agreeContainer}>
+                    <input
+                      type="checkbox"
+                      id="agree-guidelines"
+                      className={styles.agreeCheckbox}
+                      checked={agreeTerms}
+                      onChange={(e) => setAgreeTerms(e.target.checked)}
+                    />
+                    <label
+                      htmlFor="agree-guidelines"
+                      className={styles.agreeLabel}
+                    >
+                      I have read and agree to the competition guidelines.
+                    </label>
+                  </div>
+                </div>
+
+                <div
+                  className={`${styles.sectionHeader} ${!agreeTerms ? styles.paymentDisabled : ""}`}
+                >
+                  <span className={styles.sectionNum}>05</span>
                   <h2 className={styles.sectionTitle}>Payment Details</h2>
                 </div>
 
-                <div className={styles.paymentInfoBox}>
+                <div
+                  className={`${styles.paymentInfoBox} ${!agreeTerms ? styles.paymentDisabled : ""}`}
+                >
                   <p className={styles.paymentInstructions}>
                     Scan the UPI QR code or pay to the UPI ID below to complete
                     your registration.
@@ -513,6 +593,7 @@ export default function IdeathonPage() {
                           <button
                             type="button"
                             onClick={handleCopyUpi}
+                            disabled={!agreeTerms}
                             className={styles.copyButton}
                             title="Copy UPI ID"
                           >
@@ -534,7 +615,9 @@ export default function IdeathonPage() {
                   </div>
                 </div>
 
-                <div className={styles.row}>
+                <div
+                  className={`${styles.row} ${!agreeTerms ? styles.paymentDisabled : ""}`}
+                >
                   <div className={styles.field}>
                     <label className={styles.label}>
                       UPI ID (UPI ID used for payment)
@@ -544,6 +627,7 @@ export default function IdeathonPage() {
                       placeholder="e.g. transfer-id@ybl"
                       className={styles.input}
                       value={upiId}
+                      disabled={!agreeTerms}
                       onChange={(e) => setUpiId(e.target.value)}
                       required
                     />
@@ -557,12 +641,15 @@ export default function IdeathonPage() {
                       placeholder="e.g. REF100"
                       className={styles.input}
                       value={referralCode}
+                      disabled={!agreeTerms}
                       onChange={(e) => setReferralCode(e.target.value)}
                     />
                   </div>
                 </div>
 
-                <div className={styles.field}>
+                <div
+                  className={`${styles.field} ${!agreeTerms ? styles.paymentDisabled : ""}`}
+                >
                   <label className={styles.label}>Screenshot of Payment</label>
                   <div className={styles.fileUploadContainer}>
                     <input
@@ -570,12 +657,13 @@ export default function IdeathonPage() {
                       accept="image/*"
                       id="screenshot-upload"
                       className={styles.fileInput}
+                      disabled={!agreeTerms}
                       onChange={handleFileChange}
                       required
                     />
                     <label
                       htmlFor="screenshot-upload"
-                      className={styles.fileLabel}
+                      className={`${styles.fileLabel} ${!agreeTerms ? styles.fileLabelDisabled : ""}`}
                     >
                       <FiUpload className={styles.uploadIcon} />
                       {screenshotFileName ? (
@@ -595,7 +683,7 @@ export default function IdeathonPage() {
 
                 <button
                   type="submit"
-                  disabled={submitStatus === "submitting"}
+                  disabled={submitStatus === "submitting" || !agreeTerms}
                   className={styles.submitBtn}
                 >
                   {submitStatus === "submitting" ? (
@@ -672,19 +760,6 @@ export default function IdeathonPage() {
                 .
               </li>
             </ol>
-
-            <div className={styles.agreeContainer}>
-              <input
-                type="checkbox"
-                id="agree-guidelines"
-                className={styles.agreeCheckbox}
-                checked={agreeTerms}
-                onChange={(e) => setAgreeTerms(e.target.checked)}
-              />
-              <label htmlFor="agree-guidelines" className={styles.agreeLabel}>
-                I agree to the guidelines and confirm our team registration.
-              </label>
-            </div>
 
             <div className={styles.modalActions}>
               <button

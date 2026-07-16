@@ -805,6 +805,37 @@
   font-weight: 700;
 }
 
+/* ===== Inline Guidelines Section ===== */
+.guidelinesInlineBox {
+  background: #faf8f0;
+  border: 2px solid rgba(26, 26, 26, 0.15);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.guidelinesInlineList {
+  list-style-type: decimal;
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.guidelinesInlineList li {
+  font-family: var(--font-inter), "Inter", sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--color-primary);
+}
+
+.guidelinesInlineList li strong {
+  font-weight: 700;
+}
+
+/* ===== Agree Checkbox (used in inline section) ===== */
 .agreeContainer {
   display: flex;
   align-items: flex-start;
@@ -812,7 +843,7 @@
   background: #faf2d3;
   border: 2px solid var(--color-primary);
   padding: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
 }
 
 .agreeCheckbox {
@@ -830,6 +861,20 @@
   line-height: 1.4;
   cursor: pointer;
   user-select: none;
+}
+
+/* ===== Disabled Payment State ===== */
+.paymentDisabled {
+  opacity: 0.4;
+  pointer-events: none;
+  user-select: none;
+  filter: grayscale(0.3);
+}
+
+.fileLabelDisabled {
+  cursor: not-allowed !important;
+  border-style: dashed;
+  opacity: 0.6;
 }
 
 .modalActions {
